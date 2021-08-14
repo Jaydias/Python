@@ -1,0 +1,34 @@
+##Creation of autologon scripts.
+##By Jay Dias
+##May 2019
+##
+##The Following code sample is a python script created in May 2019 with two goals. 
+##The first goal is to create a registry edit file for a Windows 7 OS that allows for the automation of logging in with a set of credentials for a computer once the computer reboots.
+##The second goal of this code is to deploy the file to a specific directory on a targeted computer on the network.
+##This code was written to automate an otherwise repetitive and time-consuming task of manually creating this registry edit. 
+##It assumes that the user running the script has sufficient domain level permissions to write files to domain joined computers.
+
+print('What is the user name?')
+userName = input()
+print('What is the Domain Name?')
+Domain = input()
+print('What is the password for ' + userName + '?')
+Password = input()
+print('What is the IPv4 address of the computer?')
+IPv4 = input()
+ 
+fileDest = '//' + IPv4 + '/c$/Dell/autologon.reg'
+file = open(fileDest,"w")
+ 
+file.write("Windows Registry Editor Version 5.00\n")
+file.write("\n")
+file.write("[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon]\n")
+file.write('"' + "DefaultUserName" + '"' + "=" + '"' + userName + '"\n')
+file.write('"AutoAdminLogon"' + '="' + '1"\n')
+file.write('"DefaultDomainName"="' + Domain + '"\n')
+file.write('"DefaultPassword"="' + Password + '"\n')
+ 
+file.close()
+ 
+print('done')
+ 
